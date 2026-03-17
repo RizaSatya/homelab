@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RizaSatya/homelab.git
     targetRevision: main
-    path: apps/test-app
+    path: apps/whoami
   destination:
     server: https://kubernetes.default.svc
     namespace: demo
