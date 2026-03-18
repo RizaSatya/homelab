@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: web-riza
-        image: rizasatyabudhi/web-riza:v1.0
+        image: rizasatyabudhi/web-riza:v1.1
         ports:
         - containerPort: 3000
