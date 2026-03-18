@@ -18,3 +18,9 @@ spec:
         image: rizasatyabudhi/web-riza:v1.1
         ports:
         - containerPort: 3000
+        env:
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+              secretKeyRef:
+                name: web-riza-secrets
+                key: OPENROUTER_API_KEY
