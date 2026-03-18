@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-riza
+  namespace: web-riza
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-riza
+  template:
+    metadata:
+      labels:
+        app: web-riza
+    spec:
+      containers:
+      - name: web-riza
+        image: rizasatyabudhi/web-riza:v1.0
+        ports:
+        - containerPort: 3000
