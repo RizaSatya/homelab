@@ -28,6 +28,10 @@ alertmanager:
 grafana:
   enabled: true
   defaultDashboardsTimezone: browser
+  deploymentStrategy:
+    type: Recreate
+  initChownData:
+    enabled: false
   service:
     type: ClusterIP
   ingress:
