@@ -16,5 +16,5 @@ spec:
       component: standalone-collector
   endpoints:
   - port: prom-exp
-    path: /
+    path: /metrics
     interval: 30s
