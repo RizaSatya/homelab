@@ -16,6 +16,7 @@ spec:
   - repoURL: https://github.com/RizaSatya/homelab.git
     targetRevision: main
     ref: values
+    path: platform/observability/grafana-dashboards
   destination:
     server: https://kubernetes.default.svc
     namespace: observability
