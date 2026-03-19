@@ -24,3 +24,13 @@ spec:
               secretKeyRef:
                 name: web-riza-secrets
                 key: OPENROUTER_API_KEY
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+          value: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: http/protobuf
+        - name: OTEL_SERVICE_NAME
+          value: web-riza
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: deployment.environment=homelab
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
