@@ -78,7 +78,7 @@ Responsibilities:
 - configure one replica initially
 - define receiver, processor, and exporter pipeline
 - expose only the ports needed for the first metrics-only rollout
-- set modest CPU and memory requests and limits
+- set explicit CPU and memory requests and limits sized for the current worker node
 
 Expected file:
 
@@ -96,7 +96,7 @@ Responsibilities:
 
 Expected file:
 
-- `platform/observability/opentelemetry-collector/opentelemetry-collector-servicemonitor.yaml`
+- `platform/observability/opentelemetry-collector-manifests/opentelemetry-collector-servicemonitor.yaml`
 
 ## Collector Configuration
 
@@ -114,9 +114,10 @@ OTLP/gRPC on `4317` is intentionally deferred until an application requires it.
 
 ### Processors
 
+- `memory_limiter`
 - `batch`
 
-The `batch` processor improves efficiency and keeps the first pipeline simple to reason about.
+The `memory_limiter` processor should keep the Collector within a predictable memory envelope on the current 8 GiB / 2 core worker node. The `batch` processor improves efficiency and keeps the first pipeline simple to reason about.
 
 ### Exporters
 
@@ -156,7 +157,7 @@ The new platform files should be organized as:
 
 - `argocd/opentelemetry-collector-application.yaml`
 - `platform/observability/opentelemetry-collector/values.yaml`
-- `platform/observability/opentelemetry-collector/opentelemetry-collector-servicemonitor.yaml`
+- `platform/observability/opentelemetry-collector-manifests/opentelemetry-collector-servicemonitor.yaml`
 
 This layout follows the existing repository conventions:
 
@@ -169,7 +170,12 @@ Initial deployment characteristics:
 
 - `mode: deployment`
 - `replicaCount: 1`
-- modest resource requests and limits
+- `resources.requests.cpu: 50m`
+- `resources.requests.memory: 128Mi`
+- `resources.limits.cpu: 200m`
+- `resources.limits.memory: 256Mi`
+- `memory_limiter.limit_mib: 192`
+- `memory_limiter.spike_limit_mib: 64`
 - no persistence required for the Collector
 
 One replica is sufficient for the first rollout because the immediate goal is to prove the telemetry path, not to optimize for availability. If the Collector restarts, metrics in transit may be temporarily lost, which is acceptable for this learning phase.
