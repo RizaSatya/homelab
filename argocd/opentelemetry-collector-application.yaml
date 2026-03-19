@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: opentelemetry-collector
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+    chart: opentelemetry-collector
+    targetRevision: 0.147.1
+    helm:
+      releaseName: opentelemetry-collector
+      valueFiles:
+      - $values/platform/observability/opentelemetry-collector/values.yaml
+  - repoURL: https://github.com/RizaSatya/homelab.git
+    targetRevision: main
+    ref: values
+  - repoURL: https://github.com/RizaSatya/homelab.git
+    targetRevision: main
+    path: platform/observability/opentelemetry-collector-manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observability
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - SkipDryRunOnMissingResource=true
+    - ServerSideApply=true
