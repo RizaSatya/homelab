@@ -34,7 +34,7 @@ ports:
     enabled: false
   metrics:
     enabled: false
-  prometheus-exporter:
+  prom-exp:
     enabled: true
     containerPort: 8889
     servicePort: 8889
