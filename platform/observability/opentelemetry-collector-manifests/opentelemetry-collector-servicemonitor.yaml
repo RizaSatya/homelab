@@ -15,6 +15,6 @@ spec:
       app.kubernetes.io/instance: opentelemetry-collector
       component: standalone-collector
   endpoints:
-  - port: prometheus-exporter
+  - port: prom-exp
     path: /
     interval: 30s
