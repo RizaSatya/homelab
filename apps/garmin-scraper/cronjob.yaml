@@ -47,8 +47,3 @@ spec:
                     secretKeyRef:
                       name: garmin-sync-secrets
                       key: DATABASE_URL
-                - name: FERNET_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: garmin-sync-secrets
-                      key: FERNET_KEY
