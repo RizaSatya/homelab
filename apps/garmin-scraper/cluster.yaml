@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: garmin-scraper-db
+  namespace: garmin-scraper
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
+  instances: 1
+  bootstrap:
+    initdb:
+      database: garmin
+      owner: garmin_app
+  storage:
+    size: 1Gi
+    storageClass: local-path
