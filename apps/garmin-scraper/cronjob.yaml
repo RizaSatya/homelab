@@ -17,15 +17,15 @@ spec:
           restartPolicy: Never
           containers:
             - name: garmin-sync
-              image: rizasatyabudhi/garmin-scraper:v1.0
+              image: rizasatyabudhi/garmin-scraper:v1.1
               imagePullPolicy: IfNotPresent
               command:
                 - garmin-sync
               env:
                 - name: BACKFILL_START_DATE
-                  value: 2025-11-01
+                  value: 2025-09-01
                 - name: BACKFILL_END_DATE
-                  value: 2025-11-30
+                  value: 2025-10-31
                 - name: TIMEZONE
                   value: Asia/Jakarta
                 - name: SYNC_DAYS
