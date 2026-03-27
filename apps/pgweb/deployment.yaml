@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgweb
+  namespace: database-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgweb
+  template:
+    metadata:
+      labels:
+        app: pgweb
+    spec:
+      containers:
+        - name: pgweb
+          image: ghcr.io/sosedoff/pgweb:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --bind=0.0.0.0
+            - --listen=8081
+            - --skip-open
+            - --sessions
+            - --readonly
+          ports:
+            - containerPort: 8081
+              name: http
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
