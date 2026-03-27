@@ -23,6 +23,7 @@ spec:
             - --skip-open
             - --sessions
             - --readonly
+            - --bookmarks-dir=/bookmarks
           ports:
             - containerPort: 8081
               name: http
@@ -30,8 +31,13 @@ spec:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
           volumeMounts:
+            - name: bookmarks
+              mountPath: /bookmarks
             - name: tmp
               mountPath: /tmp
       volumes:
+        - name: bookmarks
+          persistentVolumeClaim:
+            claimName: pgweb-bookmarks
         - name: tmp
           emptyDir: {}
