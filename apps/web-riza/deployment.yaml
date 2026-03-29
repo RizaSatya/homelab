@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: web-riza
-        image: rizasatyabudhi/web-riza:v1.6
+        image: rizasatyabudhi/web-riza:v1.7
         ports:
         - containerPort: 3000
         env:
@@ -34,3 +34,5 @@ spec:
           value: deployment.environment=homelab
         - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
           value: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
+        - name: PRIVATE
+          value: true
