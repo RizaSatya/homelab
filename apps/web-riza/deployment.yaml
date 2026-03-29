@@ -32,7 +32,5 @@ spec:
           value: web-riza
         - name: OTEL_RESOURCE_ATTRIBUTES
           value: deployment.environment=homelab
-        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
         - name: PRIVATE_VIEW
           value: "true"
