@@ -9,7 +9,9 @@ Guideline:
 
 Current platform areas:
 
+- `control-plane/`
 - `databases/`
 - `networking/`
 - `observability/`
+- `policy/`
 - `utilities/`
