@@ -1,10 +1,7 @@
 # Crossplane Providers
 
-This directory holds Crossplane `Provider` package manifests and any supporting provider runtime configuration.
+This directory is reserved for Crossplane `Provider` package manifests.
 
-Current contents:
+The current `WebApp` API does not need a provider package for its core runtime objects because Crossplane v2 can compose native Kubernetes resources directly.
 
-- `provider-kubernetes` for composing Kubernetes runtime resources
-- a `DeploymentRuntimeConfig` that gives the provider a stable service account name
-- a `ClusterRoleBinding` that lets the provider manage tenant namespaces and workloads in-cluster
-- a default in-cluster `ProviderConfig`
+Future platform APIs may still add providers here for external systems or managed resources.

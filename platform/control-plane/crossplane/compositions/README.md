@@ -4,4 +4,4 @@ This directory holds the Crossplane Composition manifests that implement the pla
 
 Current contents:
 
-- the `XWebApp` composition that renders a namespace, deployment, service, and optional HPA
+- the `WebApp` composition that renders a deployment, service, and optional HPA directly in the XR namespace

@@ -1,19 +1,17 @@
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2
 kind: CompositeResourceDefinition
 metadata:
-  name: xwebapps.platform.rizaes.com
+  name: webapps.platform.rizaes.com
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
+  scope: Namespaced
   group: platform.rizaes.com
   names:
-    kind: XWebApp
-    plural: xwebapps
-  claimNames:
     kind: WebApp
     plural: webapps
   defaultCompositionRef:
-    name: xwebapps.platform.rizaes.com
+    name: webapps.platform.rizaes.com
   versions:
     - name: v1alpha1
       served: true
