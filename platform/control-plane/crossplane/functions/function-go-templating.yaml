@@ -1,0 +1,8 @@
+apiVersion: pkg.crossplane.io/v1
+kind: Function
+metadata:
+  name: function-go-templating
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  package: xpkg.crossplane.io/crossplane-contrib/function-go-templating:v0.11.1

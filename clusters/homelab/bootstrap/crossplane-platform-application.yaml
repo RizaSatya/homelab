@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crossplane-platform
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/RizaSatya/homelab.git
+      targetRevision: main
+      path: platform/control-plane/crossplane/providers
+      directory:
+        recurse: true
+    - repoURL: https://github.com/RizaSatya/homelab.git
+      targetRevision: main
+      path: platform/control-plane/crossplane/functions
+      directory:
+        recurse: true
+    - repoURL: https://github.com/RizaSatya/homelab.git
+      targetRevision: main
+      path: platform/control-plane/crossplane/xrds
+      directory:
+        recurse: true
+    - repoURL: https://github.com/RizaSatya/homelab.git
+      targetRevision: main
+      path: platform/control-plane/crossplane/compositions
+      directory:
+        recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crossplane-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
+      - ServerSideApply=true
+      - DisableClientSideApplyMigration=true
