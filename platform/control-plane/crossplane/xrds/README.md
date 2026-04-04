@@ -1,5 +1,7 @@
 # Crossplane XRDs
 
-Future CompositeResourceDefinition manifests belong here.
+This directory holds the Crossplane CompositeResourceDefinition manifests that define the platform API surface.
 
-`IDP-7` reserves this path only. No XRDs are defined yet.
+Current contents:
+
+- the `XWebApp` / `WebApp` v1alpha1 API for the first internal web app golden path
