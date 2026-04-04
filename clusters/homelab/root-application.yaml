@@ -1,20 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cloudflared
+  name: homelab-root
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/RizaSatya/homelab.git
     targetRevision: main
-    path: apps/cloudflared
+    path: clusters/homelab/bootstrap
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: cloudflare
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
