@@ -55,6 +55,8 @@ Platform components are still explicit child apps because they have different na
 - [clusters/homelab/bootstrap/opentelemetry-collector-application.yaml](/Users/riza.satyabudhi/Documents/workshop/claude/homelab/homelab-infra/clusters/homelab/bootstrap/opentelemetry-collector-application.yaml)
 - [clusters/homelab/bootstrap/pgweb-application.yaml](/Users/riza.satyabudhi/Documents/workshop/claude/homelab/homelab-infra/clusters/homelab/bootstrap/pgweb-application.yaml)
 
+After `IDP-6`, the explicit platform workload paths now live under `platform/` instead of `apps/`.
+
 ## Bootstrap and migration notes
 
 Bootstrap a fresh cluster with:
