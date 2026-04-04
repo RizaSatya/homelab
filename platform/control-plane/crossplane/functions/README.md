@@ -1,5 +1,8 @@
 # Crossplane Functions
 
-Future Crossplane `Function` package manifests belong here.
+This directory holds Crossplane `Function` package manifests.
 
-`IDP-7` reserves this path only. No functions are installed yet.
+Current contents:
+
+- `function-go-templating` to render composed resources from the `WebApp` claim
+- `function-auto-ready` to report readiness for the composed Kubernetes resources

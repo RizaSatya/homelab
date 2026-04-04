@@ -1,0 +1,113 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xwebapps.platform.rizaes.com
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  group: platform.rizaes.com
+  names:
+    kind: XWebApp
+    plural: xwebapps
+  claimNames:
+    kind: WebApp
+    plural: webapps
+  defaultCompositionRef:
+    name: xwebapps.platform.rizaes.com
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                image:
+                  type: string
+                port:
+                  type: integer
+                  minimum: 1
+                  maximum: 65535
+                host:
+                  type: string
+                owner:
+                  type: string
+                resources:
+                  type: object
+                  properties:
+                    requests:
+                      type: object
+                      properties:
+                        cpu:
+                          type: string
+                        memory:
+                          type: string
+                      required:
+                        - cpu
+                        - memory
+                    limits:
+                      type: object
+                      properties:
+                        cpu:
+                          type: string
+                        memory:
+                          type: string
+                      required:
+                        - cpu
+                        - memory
+                  required:
+                    - requests
+                    - limits
+                secretRefs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      envName:
+                        type: string
+                      secretName:
+                        type: string
+                      secretKey:
+                        type: string
+                    required:
+                      - envName
+                      - secretName
+                      - secretKey
+                env:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
+                    required:
+                      - name
+                      - value
+                autoscaling:
+                  type: object
+                  properties:
+                    minReplicas:
+                      type: integer
+                      minimum: 1
+                    maxReplicas:
+                      type: integer
+                      minimum: 1
+                    targetCPUUtilizationPercentage:
+                      type: integer
+                      minimum: 1
+                      maximum: 100
+                  required:
+                    - minReplicas
+                    - maxReplicas
+                    - targetCPUUtilizationPercentage
+              required:
+                - image
+                - port
+                - host
+                - owner
+                - resources
