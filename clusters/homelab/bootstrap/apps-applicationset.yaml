@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: homelab-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - git:
+        repoURL: https://github.com/RizaSatya/homelab.git
+        revision: main
+        directories:
+          - path: apps/*/app
+  template:
+    metadata:
+      name: '{{ index (splitList "/" .path.path) 1 }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/RizaSatya/homelab.git
+        targetRevision: main
+        path: '{{ .path.path }}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ index (splitList "/" .path.path) 1 }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
