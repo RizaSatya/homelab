@@ -1,5 +1,7 @@
 # Crossplane Compositions
 
-Future Crossplane Composition manifests belong here.
+This directory holds the Crossplane Composition manifests that implement the platform APIs defined in `xrds/`.
 
-`IDP-7` reserves this path only. No Compositions are defined yet.
+Current contents:
+
+- the `XWebApp` composition that renders a namespace, deployment, service, and optional HPA
