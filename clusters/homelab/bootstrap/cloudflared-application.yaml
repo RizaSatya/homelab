@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/RizaSatya/homelab.git
     targetRevision: main
-    path: apps/cloudflared
+    path: platform/networking/cloudflared
   destination:
     server: https://kubernetes.default.svc
     namespace: cloudflare
