@@ -1,0 +1,135 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: webapps.platform.rizaes.com
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  compositeTypeRef:
+    apiVersion: platform.rizaes.com/v1alpha1
+    kind: WebApp
+  mode: Pipeline
+  pipeline:
+    - step: render-webapp-resources
+      functionRef:
+        name: function-go-templating
+      input:
+        apiVersion: gotemplating.fn.crossplane.io/v1beta1
+        kind: GoTemplate
+        source: Inline
+        inline:
+          options:
+            - missingkey=error
+          template: |
+            {{- $xr := .observed.composite.resource -}}
+            {{- $name := $xr.metadata.name -}}
+            {{- $namespace := $xr.metadata.namespace -}}
+            {{- $labels := dict "app.kubernetes.io/name" $name "app.kubernetes.io/part-of" "webapp-platform" "platform.rizaes.com/owner" $xr.spec.owner "platform.rizaes.com/webapp" "true" -}}
+            {{- $baseAnnotations := dict "platform.rizaes.com/host" $xr.spec.host "platform.rizaes.com/owner" $xr.spec.owner -}}
+            {{- $envs := get $xr.spec "env" | default (list) -}}
+            {{- $secretRefs := get $xr.spec "secretRefs" | default (list) -}}
+            {{- $autoscaling := get $xr.spec "autoscaling" -}}
+            ---
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: {{ $name }}
+              namespace: {{ $namespace }}
+              labels:
+            {{ toYaml $labels | indent 16 }}
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: deployment
+            {{ toYaml $baseAnnotations | indent 16 }}
+            spec:
+              replicas: {{ if $autoscaling }}{{ $autoscaling.minReplicas }}{{ else }}1{{ end }}
+              selector:
+                matchLabels:
+                  app.kubernetes.io/name: {{ $name }}
+              template:
+                metadata:
+                  labels:
+            {{ toYaml $labels | indent 20 }}
+                  annotations:
+            {{ toYaml $baseAnnotations | indent 20 }}
+                spec:
+                  containers:
+                    - name: {{ $name }}
+                      image: {{ $xr.spec.image }}
+                      ports:
+                        - name: http
+                          containerPort: {{ $xr.spec.port }}
+                      env:
+                        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+                          value: http://opentelemetry-collector.observability.svc.cluster.local:4318/v1/metrics
+                        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+                          value: http/protobuf
+                        - name: OTEL_SERVICE_NAME
+                          value: {{ $name }}
+                        - name: OTEL_RESOURCE_ATTRIBUTES
+                          value: deployment.environment=homelab
+            {{- range $env := $envs }}
+                        - name: {{ $env.name }}
+                          value: {{ $env.value | quote }}
+            {{- end }}
+            {{- range $secretRef := $secretRefs }}
+                        - name: {{ $secretRef.envName }}
+                          valueFrom:
+                            secretKeyRef:
+                              name: {{ $secretRef.secretName }}
+                              key: {{ $secretRef.secretKey }}
+            {{- end }}
+                      resources:
+                        requests:
+                          cpu: {{ $xr.spec.resources.requests.cpu | quote }}
+                          memory: {{ $xr.spec.resources.requests.memory | quote }}
+                        limits:
+                          cpu: {{ $xr.spec.resources.limits.cpu | quote }}
+                          memory: {{ $xr.spec.resources.limits.memory | quote }}
+            ---
+            apiVersion: v1
+            kind: Service
+            metadata:
+              name: {{ $name }}
+              namespace: {{ $namespace }}
+              labels:
+            {{ toYaml $labels | indent 16 }}
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: service
+            {{ toYaml $baseAnnotations | indent 16 }}
+            spec:
+              selector:
+                app.kubernetes.io/name: {{ $name }}
+              ports:
+                - name: http
+                  port: {{ $xr.spec.port }}
+                  targetPort: {{ $xr.spec.port }}
+            {{- if $autoscaling }}
+            ---
+            apiVersion: autoscaling/v2
+            kind: HorizontalPodAutoscaler
+            metadata:
+              name: {{ $name }}
+              namespace: {{ $namespace }}
+              labels:
+            {{ toYaml $labels | indent 16 }}
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: hpa
+            {{ toYaml $baseAnnotations | indent 16 }}
+            spec:
+              scaleTargetRef:
+                apiVersion: apps/v1
+                kind: Deployment
+                name: {{ $name }}
+              minReplicas: {{ $autoscaling.minReplicas }}
+              maxReplicas: {{ $autoscaling.maxReplicas }}
+              metrics:
+                - type: Resource
+                  resource:
+                    name: cpu
+                    target:
+                      type: Utilization
+                      averageUtilization: {{ $autoscaling.targetCPUUtilizationPercentage }}
+            {{- end }}
+    - step: automatically-detect-ready-composed-resources
+      functionRef:
+        name: function-auto-ready
