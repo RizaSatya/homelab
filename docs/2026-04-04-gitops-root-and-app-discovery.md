@@ -75,5 +75,5 @@ Important migration note for an existing cluster:
 
 - move all workloads into final `clusters/` and `platform/` target layouts
 - introduce Crossplane, Kyverno, or Backstage
-- convert app manifests to platform claims
+- convert app manifests to platform resources such as a namespaced `WebApp`
 - add Argo CD projects or tenant isolation

@@ -4,4 +4,4 @@ This directory holds the Crossplane CompositeResourceDefinition manifests that d
 
 Current contents:
 
-- the `XWebApp` / `WebApp` v1alpha1 API for the first internal web app golden path
+- the `WebApp` v1alpha1 API for the first internal web app golden path, defined with the Crossplane v2 XRD API

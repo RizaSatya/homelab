@@ -20,6 +20,11 @@ spec:
         recurse: true
     - repoURL: https://github.com/RizaSatya/homelab.git
       targetRevision: main
+      path: platform/control-plane/crossplane/rbac
+      directory:
+        recurse: true
+    - repoURL: https://github.com/RizaSatya/homelab.git
+      targetRevision: main
       path: platform/control-plane/crossplane/xrds
       directory:
         recurse: true
