@@ -11,6 +11,7 @@ Current contract:
 Current tenant apps:
 
 - `web-riza`
+- `web-riza-crossplane`
 - `garmin-scraper`
 
 Future Backstage onboarding and platform APIs should target this contract.

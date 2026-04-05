@@ -1,0 +1,19 @@
+apiVersion: platform.rizaes.com/v1alpha1
+kind: WebApp
+metadata:
+  name: web-riza-crossplane
+spec:
+  image: rizasatyabudhi/web-riza:v1.9
+  port: 3000
+  host: web-riza-crossplane.rizaes.com
+  owner: riza
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  env:
+    - name: PRIVATE_VIEW
+      value: "true"
