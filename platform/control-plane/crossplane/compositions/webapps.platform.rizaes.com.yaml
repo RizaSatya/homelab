@@ -65,17 +65,17 @@ spec:
                           value: {{ $name }}
                         - name: OTEL_RESOURCE_ATTRIBUTES
                           value: deployment.environment=homelab
-            {{- range $env := $envs }}
+            {{ range $env := $envs }}
                         - name: {{ $env.name }}
                           value: {{ $env.value | quote }}
-            {{- end }}
-            {{- range $secretRef := $secretRefs }}
+            {{ end }}
+            {{ range $secretRef := $secretRefs }}
                         - name: {{ $secretRef.envName }}
                           valueFrom:
                             secretKeyRef:
                               name: {{ $secretRef.secretName }}
                               key: {{ $secretRef.secretKey }}
-            {{- end }}
+            {{ end }}
                       resources:
                         requests:
                           cpu: {{ $xr.spec.resources.requests.cpu | quote }}
@@ -101,7 +101,7 @@ spec:
                 - name: http
                   port: {{ $xr.spec.port }}
                   targetPort: {{ $xr.spec.port }}
-            {{- if $autoscaling }}
+            {{ if $autoscaling }}
             ---
             apiVersion: autoscaling/v2
             kind: HorizontalPodAutoscaler
@@ -127,7 +127,7 @@ spec:
                     target:
                       type: Utilization
                       averageUtilization: {{ $autoscaling.targetCPUUtilizationPercentage }}
-            {{- end }}
+            {{ end }}
     - step: automatically-detect-ready-composed-resources
       functionRef:
         name: function-auto-ready
