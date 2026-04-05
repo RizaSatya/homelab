@@ -34,10 +34,10 @@ spec:
               name: {{ $name }}
               namespace: {{ $namespace }}
               labels:
-            {{ toYaml $labels | indent 16 }}
+            {{ toYaml $labels | indent 4 }}
               annotations:
                 gotemplating.fn.crossplane.io/composition-resource-name: deployment
-            {{ toYaml $baseAnnotations | indent 16 }}
+            {{ toYaml $baseAnnotations | indent 4 }}
             spec:
               replicas: {{ if $autoscaling }}{{ $autoscaling.minReplicas }}{{ else }}1{{ end }}
               selector:
@@ -46,9 +46,9 @@ spec:
               template:
                 metadata:
                   labels:
-            {{ toYaml $labels | indent 20 }}
+            {{ toYaml $labels | indent 8 }}
                   annotations:
-            {{ toYaml $baseAnnotations | indent 20 }}
+            {{ toYaml $baseAnnotations | indent 8 }}
                 spec:
                   containers:
                     - name: {{ $name }}
@@ -90,10 +90,10 @@ spec:
               name: {{ $name }}
               namespace: {{ $namespace }}
               labels:
-            {{ toYaml $labels | indent 16 }}
+            {{ toYaml $labels | indent 4 }}
               annotations:
                 gotemplating.fn.crossplane.io/composition-resource-name: service
-            {{ toYaml $baseAnnotations | indent 16 }}
+            {{ toYaml $baseAnnotations | indent 4 }}
             spec:
               selector:
                 app.kubernetes.io/name: {{ $name }}
@@ -109,10 +109,10 @@ spec:
               name: {{ $name }}
               namespace: {{ $namespace }}
               labels:
-            {{ toYaml $labels | indent 16 }}
+            {{ toYaml $labels | indent 4 }}
               annotations:
                 gotemplating.fn.crossplane.io/composition-resource-name: hpa
-            {{ toYaml $baseAnnotations | indent 16 }}
+            {{ toYaml $baseAnnotations | indent 4 }}
             spec:
               scaleTargetRef:
                 apiVersion: apps/v1
