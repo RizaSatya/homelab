@@ -4,7 +4,6 @@ metadata:
   name: webapp-deployments-must-set-resource-bounds
 spec:
   background: true
-  validationFailureAction: Enforce
   rules:
     - name: require-resource-requests-and-limits-on-composed-webapp-deployments
       match:
@@ -16,6 +15,7 @@ spec:
                 matchLabels:
                   platform.rizaes.com/webapp: "true"
       validate:
+        failureAction: Enforce
         message: >-
           Every container in a Crossplane-composed WebApp Deployment must set CPU and memory
           requests and limits so the platform has predictable scheduling and blast radius.

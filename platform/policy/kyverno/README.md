@@ -41,8 +41,10 @@ Each `ClusterPolicy` in this repo follows the same basic shape:
   - decides which Kubernetes objects the rule should inspect
 - `validate`
   - defines what must be true about those objects
-- `validationFailureAction`
+- `validate.failureAction`
   - decides whether failures are `Enforce` or `Audit`
+- `emitWarning`
+  - optional helper for `Audit` rules to surface violations in admission warnings
 
 In practical terms:
 

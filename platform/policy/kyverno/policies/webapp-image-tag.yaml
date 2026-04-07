@@ -4,7 +4,6 @@ metadata:
   name: webapp-image-must-use-explicit-nonlatest-tag
 spec:
   background: true
-  validationFailureAction: Enforce
   rules:
     - name: require-webapp-image-tag
       match:
@@ -13,6 +12,7 @@ spec:
               kinds:
                 - platform.rizaes.com/v1alpha1/WebApp
       validate:
+        failureAction: Enforce
         message: >-
           WebApp spec.image must include an explicit image tag such as :v1.9 and may not use :latest.
         deny:

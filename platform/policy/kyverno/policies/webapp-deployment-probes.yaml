@@ -4,7 +4,7 @@ metadata:
   name: webapp-deployments-should-define-health-probes
 spec:
   background: true
-  validationFailureAction: Audit
+  emitWarning: true
   rules:
     - name: recommend-liveness-and-readiness-probes-on-composed-webapp-deployments
       match:
@@ -16,6 +16,7 @@ spec:
                 matchLabels:
                   platform.rizaes.com/webapp: "true"
       validate:
+        failureAction: Audit
         message: >-
           Crossplane-composed WebApp Deployments should define readinessProbe and livenessProbe.
           This stays in Audit for now because the current WebApp API does not expose probe settings yet.

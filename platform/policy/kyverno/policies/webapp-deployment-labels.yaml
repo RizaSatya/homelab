@@ -4,7 +4,6 @@ metadata:
   name: webapp-deployments-must-carry-platform-labels
 spec:
   background: true
-  validationFailureAction: Enforce
   rules:
     - name: require-platform-labels-on-composed-webapp-deployments
       match:
@@ -16,6 +15,7 @@ spec:
                 matchLabels:
                   platform.rizaes.com/webapp: "true"
       validate:
+        failureAction: Enforce
         message: >-
           Crossplane-composed WebApp Deployments must keep the platform identity labels
           app.kubernetes.io/name, platform.rizaes.com/owner, and platform.rizaes.com/webapp=true.
