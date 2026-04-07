@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: webapp-deployments-must-set-resource-bounds
+spec:
+  background: true
+  validationFailureAction: Enforce
+  rules:
+    - name: require-resource-requests-and-limits-on-composed-webapp-deployments
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+              selector:
+                matchLabels:
+                  platform.rizaes.com/webapp: "true"
+      validate:
+        message: >-
+          Every container in a Crossplane-composed WebApp Deployment must set CPU and memory
+          requests and limits so the platform has predictable scheduling and blast radius.
+        foreach:
+          - list: "request.object.spec.template.spec.containers[]"
+            pattern:
+              resources:
+                requests:
+                  cpu: "?*"
+                  memory: "?*"
+                limits:
+                  cpu: "?*"
+                  memory: "?*"
