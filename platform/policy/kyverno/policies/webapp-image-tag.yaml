@@ -1,0 +1,26 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: webapp-image-must-use-explicit-nonlatest-tag
+spec:
+  background: true
+  validationFailureAction: Enforce
+  rules:
+    - name: require-webapp-image-tag
+      match:
+        any:
+          - resources:
+              kinds:
+                - platform.rizaes.com/v1alpha1/WebApp
+      validate:
+        message: >-
+          WebApp spec.image must include an explicit image tag such as :v1.9 and may not use :latest.
+        deny:
+          conditions:
+            any:
+              - key: "{{ regex_match('(^.*/[^:]+:[^:]+$)|(^[^/:]+:[^:]+$)', request.object.spec.image || '') }}"
+                operator: Equals
+                value: false
+              - key: "{{ regex_match('^.+:latest$', request.object.spec.image || '') }}"
+                operator: Equals
+                value: true

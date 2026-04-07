@@ -1,0 +1,27 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: webapp-deployments-must-carry-platform-labels
+spec:
+  background: true
+  validationFailureAction: Enforce
+  rules:
+    - name: require-platform-labels-on-composed-webapp-deployments
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+              selector:
+                matchLabels:
+                  platform.rizaes.com/webapp: "true"
+      validate:
+        message: >-
+          Crossplane-composed WebApp Deployments must keep the platform identity labels
+          app.kubernetes.io/name, platform.rizaes.com/owner, and platform.rizaes.com/webapp=true.
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "?*"
+              platform.rizaes.com/owner: "?*"
+              platform.rizaes.com/webapp: "true"

@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: webapp-namespace-must-match-name
+spec:
+  background: true
+  validationFailureAction: Enforce
+  rules:
+    - name: require-webapp-namespace-to-match-name
+      match:
+        any:
+          - resources:
+              kinds:
+                - platform.rizaes.com/v1alpha1/WebApp
+      validate:
+        message: >-
+          WebApp resources must live in the namespace that matches metadata.name
+          so the tenant app ApplicationSet destination and the WebApp identity stay aligned.
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.metadata.namespace || '' }}"
+                operator: NotEquals
+                value: "{{ request.object.metadata.name }}"
