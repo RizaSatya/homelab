@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: web-riza
+  title: web-riza
+  description: Main web-riza tenant web application deployed directly from runtime manifests.
+  annotations:
+    argocd/app-name: web-riza
+    backstage.io/kubernetes-cluster: homelab
+    backstage.io/kubernetes-id: web-riza
+    backstage.io/kubernetes-namespace: web-riza
+  tags:
+    - homelab
+    - kubernetes
+    - website
+spec:
+  type: website
+  lifecycle: production
+  owner: group:default/homelab-platform

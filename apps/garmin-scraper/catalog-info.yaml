@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: garmin-scraper
+  title: garmin-scraper
+  description: Garmin data sync workload with a scheduled batch job and CloudNativePG-backed storage.
+  annotations:
+    argocd/app-name: garmin-scraper
+    backstage.io/kubernetes-cluster: homelab
+    backstage.io/kubernetes-id: garmin-scraper
+    backstage.io/kubernetes-namespace: garmin-scraper
+  tags:
+    - batch
+    - database
+    - homelab
+    - kubernetes
+spec:
+  type: service
+  lifecycle: production
+  owner: group:default/homelab-platform

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.backstage.csv: |
+    p, backstage, applications, get, */*, allow
+    p, backstage, applications, list, */*, allow
+    p, backstage, logs, get, */*, allow
+    p, backstage, projects, get, *, allow
+    p, backstage, repositories, get, *, allow

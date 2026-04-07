@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: web-riza
   namespace: web-riza
+  labels:
+    backstage.io/kubernetes-id: web-riza
 spec:
   replicas: 1
   selector:
@@ -12,6 +14,7 @@ spec:
     metadata:
       labels:
         app: web-riza
+        backstage.io/kubernetes-id: web-riza
     spec:
       containers:
       - name: web-riza

@@ -22,7 +22,7 @@ spec:
             {{- $xr := .observed.composite.resource -}}
             {{- $name := $xr.metadata.name -}}
             {{- $namespace := $xr.metadata.namespace -}}
-            {{- $labels := dict "app.kubernetes.io/name" $name "app.kubernetes.io/part-of" "webapp-platform" "platform.rizaes.com/owner" $xr.spec.owner "platform.rizaes.com/webapp" "true" -}}
+            {{- $labels := dict "app.kubernetes.io/name" $name "app.kubernetes.io/part-of" "webapp-platform" "backstage.io/kubernetes-id" $name "platform.rizaes.com/owner" $xr.spec.owner "platform.rizaes.com/webapp" "true" -}}
             {{- $baseAnnotations := dict "platform.rizaes.com/host" $xr.spec.host "platform.rizaes.com/owner" $xr.spec.owner -}}
             {{- $envs := get $xr.spec "env" | default (list) -}}
             {{- $secretRefs := get $xr.spec "secretRefs" | default (list) -}}
