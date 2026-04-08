@@ -1,0 +1,55 @@
+backstage:
+  image:
+    repository: backstage
+    pullPolicy: IfNotPresent
+    tag: latest
+
+  replicas: 1
+
+  service:
+    type: ClusterIP
+    port: 7007
+
+  ingress:
+    enabled: false
+
+  postgresql:
+    enabled: true
+    primary:
+      persistence:
+        enabled: true
+        size: 8Gi
+    auth:
+      database: backstage
+
+  serviceAccount:
+    create: false
+    name: backstage
+
+  extraAppConfig:
+    - configMapName: backstage-app-config
+      filename: app-config.yaml
+
+  livenessProbe:
+    httpGet:
+      path: /.backstage/health/v1/liveness
+      port: 7007
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    failureThreshold: 3
+
+  readinessProbe:
+    httpGet:
+      path: /.backstage/health/v1/readiness
+      port: 7007
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 3
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
