@@ -44,9 +44,7 @@ ingress:
   enabled: false
 
 postgresql:
-  enabled: true
-  auth:
-    database: backstage
+  enabled: false
 
 serviceAccount:
   create: false
