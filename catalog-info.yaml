@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: homelab
+  description: Homelab Kubernetes Platform
+  annotations:
+    github.com/project-slug: RizaSatya/homelab
+spec:
+  owner: homelab-team
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: homelab-team
+  description: Homelab Platform Team
+spec:
+  type: team
+  children: []
+---
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: homelab-catalog
+  description: Root location for homelab catalog
+spec:
+  targets:
+    - ./apps/*/catalog-info.yaml
