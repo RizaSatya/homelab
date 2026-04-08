@@ -1,0 +1,13 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: web-riza-crossplane
+  description: Crossplane-managed web application
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: RizaSatya/homelab
+spec:
+  type: website
+  lifecycle: production
+  owner: homelab-team
+  system: homelab
