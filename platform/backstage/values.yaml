@@ -1,33 +1,14 @@
 backstage:
   image:
-    repository: backstage
+    registry: ghcr.io
+    repository: backstage/backstage
     pullPolicy: IfNotPresent
     tag: latest
 
   replicas: 1
 
-  service:
-    type: ClusterIP
-    port: 7007
-
-  ingress:
-    enabled: false
-
-  postgresql:
-    enabled: true
-    primary:
-      persistence:
-        enabled: true
-        size: 8Gi
-    auth:
-      database: backstage
-
-  serviceAccount:
-    create: false
-    name: backstage
-
   extraAppConfig:
-    - configMapName: backstage-app-config
+    - configMapRef: backstage-app-config
       filename: app-config.yaml
 
   livenessProbe:
@@ -53,3 +34,20 @@ backstage:
     limits:
       cpu: 500m
       memory: 512Mi
+
+service:
+  type: ClusterIP
+  ports:
+    backend: 7007
+
+ingress:
+  enabled: false
+
+postgresql:
+  enabled: true
+  auth:
+    database: backstage
+
+serviceAccount:
+  create: false
+  name: backstage
