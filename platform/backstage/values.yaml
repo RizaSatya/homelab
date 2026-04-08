@@ -7,9 +7,50 @@ backstage:
 
   replicas: 1
 
-  extraAppConfig:
-    - configMapRef: backstage-app-config
-      filename: app-config.yaml
+  appConfig:
+    app:
+      baseUrl: http://backstage.backstage.svc.cluster.local:7007
+    backend:
+      listen:
+        port: 7007
+      database:
+        client: pg
+        connection:
+          host: backstage-db-rw.backstage.svc.cluster.local
+          port: 5432
+          user: backstage_app
+          password:
+            $env: POSTGRES_PASSWORD
+          database: backstage
+    catalog:
+      locations:
+        - type: url
+          target: https://github.com/RizaSatya/homelab/blob/main/catalog-info.yaml
+        
+        - type: github-discovery
+          target: https://github.com/RizaSatya/homelab
+          rules:
+            - pattern: apps/*/catalog-info.yaml
+      
+      rules:
+        - allow: [Component, System, Group, Location]
+
+    permission:
+      enabled: false
+
+    techdocs:
+      builder: local
+      generator:
+        runIn: local
+      publisher:
+        type: local
+
+  extraEnvVars:
+    - name: POSTGRES_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: backstage-db-app
+          key: password
 
   livenessProbe:
     httpGet:
