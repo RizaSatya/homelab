@@ -6,11 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/RizaSatya/homelab.git
+    repoURL: git@github.com:RizaSatya/homelab.git
     targetRevision: main
     path: clusters/homelab/bootstrap
     directory:
       recurse: true
+    sourceCredentials:
+      - name: github-repo-creds
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

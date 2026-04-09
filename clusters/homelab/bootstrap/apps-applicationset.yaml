@@ -9,19 +9,24 @@ spec:
     - missingkey=error
   generators:
     - git:
-        repoURL: https://github.com/RizaSatya/homelab.git
+        repoURL: git@github.com:RizaSatya/homelab.git
         revision: main
         directories:
           - path: apps/*/app
+        cloneCredentials:
+          name: github-repo-creds
+          kind: RepoCreds
   template:
     metadata:
       name: '{{ index (splitList "/" .path.path) 1 }}'
     spec:
       project: default
       source:
-        repoURL: https://github.com/RizaSatya/homelab.git
+        repoURL: git@github.com:RizaSatya/homelab.git
         targetRevision: main
         path: '{{ .path.path }}'
+        sourceCredentials:
+          - name: github-repo-creds
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ index (splitList "/" .path.path) 1 }}'
