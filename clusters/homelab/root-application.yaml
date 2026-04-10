@@ -11,11 +11,15 @@ spec:
     path: clusters/homelab/bootstrap
     directory:
       recurse: true
-    sourceCredentials:
-      - name: github-repo-creds
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
+  ignoreDifferences:
+    - group: argoproj.io
+      kind: ApplicationSet
+      jsonPointers:
+        - /spec/generators/0/git/cloneCredentials
+        - /spec/template/spec/source/sourceCredentials
   syncPolicy:
     automated:
       prune: true
