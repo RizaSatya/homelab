@@ -168,7 +168,7 @@ catalog:
 argocd:
   username: backstage
   password: ${ARGOCD_AUTH_TOKEN}
-  baseUrl: https://argocd.example.com
+  baseUrl: https://argocd-server.argocd.svc.cluster.local
 ```
 
 **Note:** `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB` are managed by the CNPG `Cluster` operator and injected via secrets. The CNPG Cluster manifest lives in `homelab-infra`, not this repo.
@@ -250,6 +250,7 @@ COPY --from=build /app/app-config.yaml /app/app-config.yaml
 COPY --from=build /app/app-config.production.yaml /app/app-config.production.yaml
 
 ENV NODE_ENV=production
+ENV APP_CONFIG=/app/app-config.yaml,/app/app-config.production.yaml
 USER backstage
 
 EXPOSE 7007
@@ -315,9 +316,10 @@ The `idp-11/backstage` branch currently configures SQLite. Since this design use
 
 ## Spec Self-Review
 
-- [x] No placeholders — all code blocks contain complete, copyable content
+- [x] No placeholders — all code blocks contain complete, copyable content (fixed: ArgoCD URL, APP_CONFIG env var)
 - [x] No contradictions — CNPG is consistently used throughout (values.yaml, app-config, CNPG manifest)
 - [x] Scope is focused — companion repo creation only; homelab-infra changes noted as follow-up
 - [x] Cross-repo contract is explicit — table maps each concern to its owning repo
 - [x] Rollout order is actionable — numbered steps with clear dependencies
 - [x] Environment variables are documented — `BACKEND_SECRET`, `ARGOCD_AUTH_TOKEN`, `GITHUB_TOKEN`, `POSTGRES_*`
+- [x] Dockerfile sets `APP_CONFIG` env var to load both base and production configs
