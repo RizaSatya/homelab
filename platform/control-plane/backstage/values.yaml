@@ -26,8 +26,13 @@ backstage:
         methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
         credentials: true
       database:
-        client: better-sqlite3
-        connection: /var/lib/backstage/backstage.db
+        client: pg
+        connection:
+          host: backstage-db-rw.backstage.svc.cluster.local
+          port: 5432
+          user: ${POSTGRES_USER}
+          password: ${POSTGRES_PASSWORD}
+          database: ${POSTGRES_DB}
       reading:
         allow:
           - host: raw.githubusercontent.com
@@ -56,13 +61,9 @@ backstage:
       locations:
         - type: url
           target: https://raw.githubusercontent.com/RizaSatya/homelab/main/platform/control-plane/backstage/catalog/root.yaml
-  extraVolumes:
-    - name: backstage-data
-      persistentVolumeClaim:
-        claimName: backstage-data
-  extraVolumeMounts:
-    - name: backstage-data
-      mountPath: /var/lib/backstage
+  envFrom:
+    - secretRef:
+        name: backstage-db-app
   resources:
     requests:
       cpu: 100m
