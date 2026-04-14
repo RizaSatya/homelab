@@ -436,7 +436,55 @@ database:
     database: ${dbname}
 ```
 
-### 4. Readiness probe failing (503)
+### 4. Database permission error: `permission denied to create database`
+
+**Problem:** Backstage tries to create separate databases for each plugin (`backstage_plugin_app`, `backstage_plugin_catalog`, etc.) but the PostgreSQL user doesn't have `CREATEDB` permission.
+
+**Error:**
+```
+Failed to connect to the database to make sure that 'backstage_plugin_app' exists, error: CREATE DATABASE "backstage_plugin_app" - permission denied to create database
+```
+
+**Solution:** Grant `CREATEDB` to the database owner via `postInitApplicationSQL` in the CNPG Cluster manifest. This only runs during initial bootstrap, so you must delete and recreate the cluster:
+
+```yaml
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: backstage-db
+  namespace: backstage
+spec:
+  instances: 1
+  storage:
+    size: 1Gi
+    storageClass: local-path
+  bootstrap:
+    initdb:
+      database: backstage
+      owner: backstage
+      postInitApplicationSQL:
+        - ALTER USER backstage CREATEDB;
+```
+
+Apply the change:
+```bash
+kubectl delete cluster backstage-db -n backstage
+kubectl delete pvc backstage-db-1 -n backstage
+```
+
+ArgoCD will recreate the cluster with the new configuration. Then restart the Backstage deployment:
+```bash
+kubectl rollout restart deployment/backstage -n backstage
+```
+
+Verify the permission:
+```bash
+kubectl exec -n backstage backstage-db-1 -- psql -U postgres -d backstage -c "SELECT rolname, rolcreatedb FROM pg_roles WHERE rolname = 'backstage';"
+```
+
+Expected output: `rolcreatedb = t`
+
+### 5. Readiness probe failing (503)
 
 **Problem:** Backstage health check returns 503 when backend fails to start.
 
