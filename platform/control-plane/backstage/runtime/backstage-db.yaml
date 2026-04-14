@@ -8,7 +8,7 @@ spec:
   instances: 1
   storage:
     size: 1Gi
-    storageClassName: local-path
+    storageClass: local-path
   bootstrap:
     initdb:
       database: backstage
