@@ -3,8 +3,6 @@ kind: CronJob
 metadata:
   name: garmin-sync
   namespace: garmin-scraper
-  labels:
-    backstage.io/kubernetes-id: garmin-scraper
 spec:
   schedule: "59 23 * * *"
   timeZone: Asia/Jakarta
@@ -13,14 +11,10 @@ spec:
   failedJobsHistoryLimit: 3
   jobTemplate:
     metadata:
-      labels:
-        backstage.io/kubernetes-id: garmin-scraper
-    spec:
+      spec:
       backoffLimit: 1
       template:
         metadata:
-          labels:
-            backstage.io/kubernetes-id: garmin-scraper
         spec:
           restartPolicy: Never
           containers:

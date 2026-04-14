@@ -4,7 +4,6 @@ metadata:
   name: web-riza
   namespace: web-riza
   labels:
-    backstage.io/kubernetes-id: web-riza
 spec:
   selector:
     app: web-riza

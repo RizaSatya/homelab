@@ -3,8 +3,6 @@ kind: Cluster
 metadata:
   name: garmin-scraper-db
   namespace: garmin-scraper
-  labels:
-    backstage.io/kubernetes-id: garmin-scraper
 spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16
   instances: 1
