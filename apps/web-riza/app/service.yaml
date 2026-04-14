@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: web-riza
   namespace: web-riza
+  labels:
 spec:
   selector:
     app: web-riza

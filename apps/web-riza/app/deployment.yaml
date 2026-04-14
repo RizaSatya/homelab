@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: web-riza
   namespace: web-riza
+  labels:
 spec:
   replicas: 1
   selector:

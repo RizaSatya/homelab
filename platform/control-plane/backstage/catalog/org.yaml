@@ -1,0 +1,21 @@
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: riza
+spec:
+  profile:
+    displayName: Riza S
+  memberOf:
+    - homelab-platform
+---
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: homelab-platform
+spec:
+  type: team
+  profile:
+    displayName: Homelab Platform
+  children: []
+  members:
+    - riza

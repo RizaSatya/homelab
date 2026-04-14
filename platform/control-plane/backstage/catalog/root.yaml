@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Location
+metadata:
+  name: homelab-root
+  description: Root catalog location for the homelab Backstage v1 rollout.
+spec:
+  type: url
+  targets:
+    - https://raw.githubusercontent.com/RizaSatya/homelab/main/platform/control-plane/backstage/catalog/org.yaml
+    - https://raw.githubusercontent.com/RizaSatya/homelab/main/apps/web-riza-crossplane/catalog-info.yaml

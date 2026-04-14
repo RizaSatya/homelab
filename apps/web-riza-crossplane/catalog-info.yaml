@@ -1,0 +1,20 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: web-riza-crossplane
+  title: web-riza-crossplane
+  description: Crossplane-managed web-riza deployment that exercises the WebApp platform API.
+  annotations:
+    argocd/app-name: web-riza-crossplane
+    backstage.io/kubernetes-cluster: homelab
+    backstage.io/kubernetes-id: web-riza-crossplane
+    backstage.io/kubernetes-namespace: web-riza-crossplane
+  tags:
+    - crossplane
+    - homelab
+    - kubernetes
+    - website
+spec:
+  type: website
+  lifecycle: experimental
+  owner: group:default/homelab-platform
