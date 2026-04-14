@@ -13,3 +13,5 @@ spec:
     initdb:
       database: backstage
       owner: backstage
+      postInitApplicationSQL:
+        - ALTER USER backstage CREATEDB;
