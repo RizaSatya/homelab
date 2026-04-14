@@ -7,6 +7,4 @@ spec:
   type: url
   targets:
     - https://raw.githubusercontent.com/RizaSatya/homelab/main/platform/control-plane/backstage/catalog/org.yaml
-    - https://raw.githubusercontent.com/RizaSatya/homelab/main/apps/web-riza/catalog-info.yaml
     - https://raw.githubusercontent.com/RizaSatya/homelab/main/apps/web-riza-crossplane/catalog-info.yaml
-    - https://raw.githubusercontent.com/RizaSatya/homelab/main/apps/garmin-scraper/catalog-info.yaml
