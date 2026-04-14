@@ -4,6 +4,7 @@ metadata:
   name: backstage-db
   namespace: backstage
 spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:16
   instances: 1
   storage:
     size: 1Gi
