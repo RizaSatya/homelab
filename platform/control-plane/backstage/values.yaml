@@ -30,9 +30,9 @@ backstage:
         connection:
           host: backstage-db-rw.backstage.svc.cluster.local
           port: 5432
-          user: ${POSTGRES_USER}
-          password: ${POSTGRES_PASSWORD}
-          database: ${POSTGRES_DB}
+          user: ${username}
+          password: ${password}
+          database: ${dbname}
       reading:
         allow:
           - host: raw.githubusercontent.com
