@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: krr
+  namespace: observability
+spec:
+  schedule: "0 4 * * *"
+  timeZone: Asia/Jakarta
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccount: krr
+          containers:
+            - name: krr
+              image: us-central1-docker.pkg.dev/genuine-flight-317411/devel/krr:v1.28.0
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+                  echo "=== KRR Scan: $TIMESTAMP ==="
+                  krr simple -f json --fileoutput /reports/krr-${TIMESTAMP}.json \
+                    --max-workers 3 --width 2048
+                  echo "=== Table Summary ==="
+                  krr simple --max-workers 3 --width 120
+              volumeMounts:
+                - name: reports
+                  mountPath: /reports
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 256Mi
+                limits:
+                  memory: 1Gi
+          volumes:
+            - name: reports
+              persistentVolumeClaim:
+                claimName: krr-reports
