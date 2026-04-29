@@ -26,10 +26,10 @@ spec:
                 - |
                   TIMESTAMP=$(date +%Y%m%d-%H%M%S)
                   echo "=== KRR Scan: $TIMESTAMP ==="
-                  krr simple -f json --fileoutput /reports/krr-${TIMESTAMP}.json \
+                  python3 krr.py simple -f json --fileoutput /reports/krr-${TIMESTAMP}.json \
                     --max-workers 3 --width 2048
                   echo "=== Table Summary ==="
-                  krr simple --max-workers 3 --width 120
+                  python3 krr.py simple --max-workers 3 --width 120
               volumeMounts:
                 - name: reports
                   mountPath: /reports
